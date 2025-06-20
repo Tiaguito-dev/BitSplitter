@@ -11,3 +11,4 @@ color_borde= color_texto
 fuente_general = ("Segoe UI", 12)      # Fuente clara y moderna
 fuente_titulo = ("Segoe UI", 18, "bold")
 fuente_seccion = ("Segoe UI", 14, "bold")
+
