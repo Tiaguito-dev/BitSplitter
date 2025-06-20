@@ -1,7 +1,7 @@
 # TABLA DE ASCII
 
 # ESTA ES LA TABLA
-tabla_codigos = {
+tabla_probabilidades = {
     'A': 0.38,
     'B': 0.17,
     'C': 0.15,
@@ -9,4 +9,11 @@ tabla_codigos = {
     'E': 0.12,
 }
 
-print(tabla_codigos["B"])
+print(tabla_probabilidades["B"])
+
+
+tabla_codigo = {
+    'A': "000",
+    'B': "001",
+    #asi con todas
+}
