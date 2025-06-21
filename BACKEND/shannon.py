@@ -63,31 +63,32 @@ def calcular_eficiencia(entropia, longitud_promedio): #Evalúa qué tan cercano 
 
 #Programa Principal
 
-texto_a_codificar = input("Ingrese el texto a codificar: ")
-texto = limpiar_texto(texto_a_codificar) #Pide al usuario el texto y lo limpia para evitar errores de codificación con caracteres raros.
+def main():
+    texto_a_codificar = input("Ingrese el texto a codificar: ")
+    texto = limpiar_texto(texto_a_codificar) #Pide al usuario el texto y lo limpia para evitar errores de codificación con caracteres raros.
 
-if not texto:
-    print("El texto no contiene caracteres válidos para codificar.")
-    exit() #Si después de limpiar no queda texto útil, se cancela.
+    if not texto:
+        print("El texto no contiene caracteres válidos para codificar.")
+        exit() #Si después de limpiar no queda texto útil, se cancela.
 
-probabilidades, frecuencias = calcular_probabilidades(texto)
-codigos = shannon_fano(probabilidades) #Se calculan las probabilidades y se generan los códigos Shannon-Fano.
+    probabilidades, frecuencias = calcular_probabilidades(texto)
+    codigos = shannon_fano(probabilidades) #Se calculan las probabilidades y se generan los códigos Shannon-Fano.
 
-print("\nCaracter | Frecuencia | Probabilidad | Código Shannon-Fano") #Tabla que imprime cada carácter con su frecuencia, probabilidad y código asignado.
-print("---------|------------|--------------|---------------------")
-for char in sorted(probabilidades, key=probabilidades.get, reverse=True):
-    print(f"{repr(char):^8} | {frecuencias[char]:^10} | {probabilidades[char]:^12.4f} | {codigos[char]:^19}")
+    print("\nCaracter | Frecuencia | Probabilidad | Código Shannon-Fano") #Tabla que imprime cada carácter con su frecuencia, probabilidad y código asignado.
+    print("---------|------------|--------------|---------------------")
+    for char in sorted(probabilidades, key=probabilidades.get, reverse=True):
+        print(f"{repr(char):^8} | {frecuencias[char]:^10} | {probabilidades[char]:^12.4f} | {codigos[char]:^19}")
 
-#Codifica el mensaje
-texto_codificado = codificar_texto(texto, codigos)
-print("\nTexto codificado:")
-print(texto_codificado)
+    #Codifica el mensaje
+    texto_codificado = codificar_texto(texto, codigos)
+    print("\nTexto codificado:")
+    print(texto_codificado)
 
-entropia = calcular_entropia(probabilidades) 
-longitud_promedio = calcular_longitud_promedio(probabilidades, codigos)
-eficiencia = calcular_eficiencia(entropia, longitud_promedio)
+    entropia = calcular_entropia(probabilidades) 
+    longitud_promedio = calcular_longitud_promedio(probabilidades, codigos)
+    eficiencia = calcular_eficiencia(entropia, longitud_promedio)
 
 
-print(f"\nEntropía H(X): {entropia:.4f} bits") #Entropía: cuánta información tiene el texto.
-print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo") #Longitud promedio: cuánto ocupa realmente.
-print(f"Eficiencia del código: {eficiencia:.2f} %") #ficiencia: cuán cerca está de Hmax (100%).
+    print(f"\nEntropía H(X): {entropia:.4f} bits") #Entropía: cuánta información tiene el texto.
+    print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo") #Longitud promedio: cuánto ocupa realmente.
+    print(f"Eficiencia del código: {eficiencia:.2f} %") #ficiencia: cuán cerca está de Hmax (100%).

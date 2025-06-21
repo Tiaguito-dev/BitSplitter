@@ -1,0 +1,1 @@
+# Comparación gráfica y estadísticas
