@@ -136,7 +136,7 @@ if not texto:
 
 texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia = comprimir(texto)
 
-print("\nCaracter | Frecuencia | Probabilidad | Código Huffman (orden del árbol)")
+print("\nCaracter | Frecuencia | Probabilidad | Código Huffman")
 print("---------|------------|--------------|-----------------------------")
 tabla_huffman = obtener_tabla_desde_arbol(arbol, '', [], frecuencias, probabilidades)
 for entrada in tabla_huffman:
