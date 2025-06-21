@@ -1,10 +1,9 @@
 import tkinter as tk
 import customtkinter as ctk  # Importar customtkinter para widgets personalizados
-import sys # Importar sys para manipular el path
-import os # Importar os para manipular rutas de archivos
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from BitSplitter.BACKEND import constantes  # Importar las constantes desde el módulo de constantes
-from BitSplitter.DATABASE import registros  # Para importar la ventana
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from BACKEND import constantes  # Importar las constantes desde el módulo de constantes
+from DATABASE import registros  # Para importar la ventana
 
 
 # -- CONFIGURACIÓN DE LA VENTANA PRINCIPAL --
@@ -108,7 +107,6 @@ campo_texto = ctk.CTkTextbox(
     border_color=constantes.color_borde
 )
 campo_texto.grid(row=1, column=0, sticky="nsew", padx=20, pady=(0,10))
-campo_texto.insert("1.0", "Aquí se mostrará el mensaje codificado o decodificado. asdfadfasdfasdfasfasdfasdfasdfasdfadfasdfasdfasdf fadfasdf asdfa df afd a fasd fasd fasdf asf asdf asdf asdf asdfasd fasdfasdf asdf asfasdf asdasdf asfdas dfasd fa sdfas fas fasdf asf asdf asd fasd fasdf asdf asdf")
 campo_texto.configure(state="disabled")
 # Botones de codificación y decodificación
 frame_botones = tk.Frame(
@@ -117,6 +115,7 @@ frame_botones = tk.Frame(
     )
 frame_botones.grid(row=1, column=1,sticky="w")
 # Botón "Encode"
+codigo = registros.codigo  # Aquí se vincula la variable codigo para actualizarla con el código generado
 encode = ctk.CTkButton(
     frame_botones,
     text="Encode",
@@ -128,7 +127,13 @@ encode = ctk.CTkButton(
     border_width=1,  # Ancho del borde
     border_color=constantes.color_borde,  # Color del borde
     # Cuando aprieta el botón tiene que guardar el texto en la BD
-    command = lambda: registros.guardar_palabra(entrada_titulo.get())  # Aquí se llama a la función que guarda el texto ingresado en la entrada de texto
+    command = lambda: (
+        registros.guardar_palabra(entrada_titulo.get()),
+        campo_texto.configure(state="normal"),
+        campo_texto.delete("1.0", "end"),
+        campo_texto.insert("1.0", codigo.get()),
+        campo_texto.configure(state="disabled")
+    ) # Aquí se llama a la función que guarda el texto ingresado en la entrada de texto
 # TO DO # Implementar la función de codificación aquí
 
 

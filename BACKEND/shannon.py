@@ -86,6 +86,7 @@ def main(palabra):
 
     # -- IMPRESIÓN DE RESULTADOS --
     # Lo dejo comentado para que puedas descomentar si quieres ver los resultados en la consola.
+    """
     print("\n--- Resultados de la codificación Shannon-Fano ---")
     # Imprime la tabla de frecuencias, probabilidades y códigos
     print("\nCaracter | Frecuencia | Probabilidad | Código Shannon-Fano") #Tabla que imprime cada carácter con su frecuencia, probabilidad y código asignado.
@@ -101,3 +102,5 @@ def main(palabra):
     print(f"\nEntropía H(X): {entropia:.4f} bits") #Entropía: cuánta información tiene el texto.
     print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo") #Longitud promedio: cuánto ocupa realmente.
     print(f"Eficiencia del código: {eficiencia:.2f} %") #ficiencia: cuán cerca está de Hmax (100%)
+    """
+    return texto_codificado  # Devuelve el texto codificado para usarlo en la interfaz gráfica o donde sea necesario.
