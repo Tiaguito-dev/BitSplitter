@@ -1,14 +1,14 @@
 import tkinter as tk
-import sys
-import os
 import customtkinter as ctk  # Importar customtkinter para widgets personalizados
+import sys # Importar sys para manipular el path
+import os # Importar os para manipular rutas de archivos
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from BitSplitter.BACKEND import constantes  # Importar las constantes desde el módulo de constantes
-from BitSplitter.BACKEND import shannon  # Importar el módulo de codificación Shannon-Fano
+from BitSplitter.DATABASE import registros  # Para importar la ventana
 
 
 # -- CONFIGURACIÓN DE LA VENTANA PRINCIPAL --
-ventana = tk.Tk()  # Crear la ventana principal
+ventana = registros.ventana  # Utilizar la ventana principal definida en registros.py
 ventana.geometry("800x500")  # Definir el tamaño de la ventana (ancho x alto)
 ventana.resizable(False, False)  # Deshabilitar el cambio de tamaño de la ventana
 # Esto evita que el usuario pueda cambiar el tamaño de la ventana y mantiene un diseño fijo.
@@ -34,7 +34,7 @@ frame_titulo.place(
 # Etiqueta del título dentro del frame
 titulo = tk.Label(
     frame_titulo,
-    text="Compression and Decompression Tool",
+    text="BitSplitter: Shannon-Fano Encoder",
     font=constantes.fuente_titulo,
     bg=constantes.color_fondo_titulo,
     fg=constantes.color_texto
@@ -43,9 +43,9 @@ titulo.pack(expand=True)
 
 
 # -- Frame de la carga de archivos --
-frame_input = tk.Frame(ventana)
+frame_input = tk.Frame(ventana, bg=constantes.color_fondo)  # Crear un frame para la carga de archivos
 frame_input.place(
-    rely=0.1, 
+    rely=0.09, 
     relheight=0.25, 
     relwidth=1
 )
@@ -54,6 +54,7 @@ tk.Label(
     frame_input, 
     text="Input Text", 
     font=constantes.fuente_seccion,
+    bg=constantes.color_fondo,
     fg=constantes.color_texto  # ← color del texto
 ).grid(row=0, column=0, padx=20, pady=15, sticky="w")
 entrada_titulo = ctk.CTkEntry(
@@ -81,7 +82,7 @@ boton_cargar.grid(row=1, column=1, padx=20, sticky="w")
 
 
 # -- Frame de codificación y decodificación --
-frame_code = tk.Frame(ventana)
+frame_code = tk.Frame(ventana, bg=constantes.color_fondo)
 frame_code.place(
     rely=0.30,  # Posición vertical relativa (comienza abajo de la etiqueta)
     relheight=0.4,
@@ -95,6 +96,7 @@ tk.Label(
     frame_code, 
     text="Encoded Message", 
     font=constantes.fuente_seccion,
+    bg=constantes.color_fondo,
     fg=constantes.color_texto
 ).grid(row=0, column=0, padx=20, pady=10, sticky="w")
 campo_texto = ctk.CTkTextbox(
@@ -109,7 +111,10 @@ campo_texto.grid(row=1, column=0, sticky="nsew", padx=20, pady=(0,10))
 campo_texto.insert("1.0", "Aquí se mostrará el mensaje codificado o decodificado. asdfadfasdfasdfasfasdfasdfasdfasdfadfasdfasdfasdf fadfasdf asdfa df afd a fasd fasd fasdf asf asdf asdf asdf asdfasd fasdfasdf asdf asfasdf asdasdf asfdas dfasd fa sdfas fas fasdf asf asdf asd fasd fasdf asdf asdf")
 campo_texto.configure(state="disabled")
 # Botones de codificación y decodificación
-frame_botones = tk.Frame(frame_code)
+frame_botones = tk.Frame(
+    frame_code,
+    bg=constantes.color_fondo
+    )
 frame_botones.grid(row=1, column=1,sticky="w")
 # Botón "Encode"
 encode = ctk.CTkButton(
@@ -122,7 +127,8 @@ encode = ctk.CTkButton(
     width=100,
     border_width=1,  # Ancho del borde
     border_color=constantes.color_borde,  # Color del borde
-    command=shannon.main
+    # Cuando aprieta el botón tiene que guardar el texto en la BD
+    command = lambda: registros.guardar_palabra(entrada_titulo.get())  # Aquí se llama a la función que guarda el texto ingresado en la entrada de texto
 # TO DO # Implementar la función de codificación aquí
 
 
@@ -149,7 +155,7 @@ decode.grid(
 
 
 # -- Frame de resultados --
-frame_output = tk.Frame(ventana)
+frame_output = tk.Frame(ventana, bg=constantes.color_fondo)
 frame_output.place(
     rely=0.7,  # Posición vertical relativa (comienza abajo de la etiqueta)
     relheight=0.3,  # Altura relativa del contenedor
@@ -161,6 +167,7 @@ tk.Label(
     frame_output, 
     text="Comparison Results", 
     font=constantes.fuente_seccion,
+    bg=constantes.color_fondo,
     fg=constantes.color_texto
 ).grid(row=0, column=0, padx=20, pady=10, sticky="w")  # Título de la sección
 frame_resultados = ctk.CTkFrame(frame_output, border_width=1, border_color=constantes.color_borde, fg_color="transparent")  # Crear un frame personalizado con customtkinter
@@ -168,16 +175,19 @@ frame_resultados.grid(row=1, column=0, padx=20, sticky="nsew")  # Contenedor par
 tk.Label(
     frame_resultados,
     text="Compresion ratio:",
+    bg=constantes.color_fondo,
     font=("Arial", 12)
 ).grid(row=0, column=0, sticky="w", padx=2, pady=1)  # Etiqueta para mostrar resultados
 tk.Label(
     frame_resultados,
     text="Compresion ratio:",
+    bg=constantes.color_fondo,
     font=("Arial", 12)
 ).grid(row=1, column=0, sticky="w", padx=2, pady=1)  # Etiqueta para mostrar resultados
 tk.Label(
     frame_resultados,
     text="Compresion ratio:",
+    bg=constantes.color_fondo,
     font=("Arial", 12),
 ).grid(row=2, column=0, sticky="w", padx=2, pady=1)  # Etiqueta para mostrar resultados
 

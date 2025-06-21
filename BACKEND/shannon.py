@@ -63,32 +63,41 @@ def calcular_eficiencia(entropia, longitud_promedio): #Evalúa qué tan cercano 
 
 #Programa Principal
 
-def main():
-    texto_a_codificar = input("Ingrese el texto a codificar: ")
-    texto = limpiar_texto(texto_a_codificar) #Pide al usuario el texto y lo limpia para evitar errores de codificación con caracteres raros.
-
+def main(palabra):
+    # Validación básica de entrada
+    print("Bienvenido al codificador Shannon-Fano") #Mensaje de bienvenida
+    texto = limpiar_texto(palabra) #Pide al usuario el texto y lo limpia para evitar errores de codificación con caracteres raros.
     if not texto:
         print("El texto no contiene caracteres válidos para codificar.")
         exit() #Si después de limpiar no queda texto útil, se cancela.
 
+    # Calcula las probabilidades y frecuencias de los caracteres
+    # y genera los códigos Shannon-Fano
     probabilidades, frecuencias = calcular_probabilidades(texto)
     codigos = shannon_fano(probabilidades) #Se calculan las probabilidades y se generan los códigos Shannon-Fano.
-
-    print("\nCaracter | Frecuencia | Probabilidad | Código Shannon-Fano") #Tabla que imprime cada carácter con su frecuencia, probabilidad y código asignado.
-    print("---------|------------|--------------|---------------------")
-    for char in sorted(probabilidades, key=probabilidades.get, reverse=True):
-        print(f"{repr(char):^8} | {frecuencias[char]:^10} | {probabilidades[char]:^12.4f} | {codigos[char]:^19}")
-
+    
     #Codifica el mensaje
     texto_codificado = codificar_texto(texto, codigos)
-    print("\nTexto codificado:")
-    print(texto_codificado)
-
+    
+    # Calcula la entropía, longitud promedio y eficiencia del código
     entropia = calcular_entropia(probabilidades) 
     longitud_promedio = calcular_longitud_promedio(probabilidades, codigos)
     eficiencia = calcular_eficiencia(entropia, longitud_promedio)
 
-
+    # -- IMPRESIÓN DE RESULTADOS --
+    # Lo dejo comentado para que puedas descomentar si quieres ver los resultados en la consola.
+    print("\n--- Resultados de la codificación Shannon-Fano ---")
+    # Imprime la tabla de frecuencias, probabilidades y códigos
+    print("\nCaracter | Frecuencia | Probabilidad | Código Shannon-Fano") #Tabla que imprime cada carácter con su frecuencia, probabilidad y código asignado.
+    print("---------|------------|--------------|---------------------")
+    for char in sorted(probabilidades, key=probabilidades.get, reverse=True):
+        print(f"{repr(char):^8} | {frecuencias[char]:^10} | {probabilidades[char]:^12.4f} | {codigos[char]:^19}")
+    
+    # Imprime el texto original y el texto codificado
+    print("\nTexto codificado:")
+    print(texto_codificado)
+    
+    # Imprime la entropía, longitud promedio y eficiencia del código
     print(f"\nEntropía H(X): {entropia:.4f} bits") #Entropía: cuánta información tiene el texto.
     print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo") #Longitud promedio: cuánto ocupa realmente.
-    print(f"Eficiencia del código: {eficiencia:.2f} %") #ficiencia: cuán cerca está de Hmax (100%).
+    print(f"Eficiencia del código: {eficiencia:.2f} %") #ficiencia: cuán cerca está de Hmax (100%)
