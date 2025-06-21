@@ -1,0 +1,1 @@
+from BitSplitter.GUI import interfaz
