@@ -128,31 +128,30 @@ def comprimir(texto):
     return texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia
 
 # Bloque principal
-if __name__ == "__main__":
-    texto = input("Ingrese el texto a codificar: ").strip()
+texto = input("Ingrese el texto a codificar: ").strip()
 
-    if not texto:
-        print("Texto vacío. No hay nada para codificar.")
-        exit()
+if not texto:
+    print("Texto vacío. No hay nada para codificar.")
+    exit()
 
-    texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia = comprimir(texto)
+texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia = comprimir(texto)
 
-    print("\nCaracter | Frecuencia | Probabilidad | Código Huffman (orden del árbol)")
-    print("---------|------------|--------------|-----------------------------")
-    tabla_huffman = obtener_tabla_desde_arbol(arbol, '', [], frecuencias, probabilidades)
-    for entrada in tabla_huffman:
-        char = repr(entrada['caracter'])
-        print(f"{char:^8} | {entrada['frecuencia']:^10} | {entrada['probabilidad']:^12.4f} | {entrada['codigo']:^27}")
+print("\nCaracter | Frecuencia | Probabilidad | Código Huffman")
+print("---------|------------|--------------|-----------------------------")
+tabla_huffman = obtener_tabla_desde_arbol(arbol, '', [], frecuencias, probabilidades)
+for entrada in tabla_huffman:
+    char = repr(entrada['caracter'])
+    print(f"{char:^8} | {entrada['frecuencia']:^10} | {entrada['probabilidad']:^12.4f} | {entrada['codigo']:^27}")
 
-    print("\nTexto codificado:")
-    print(texto_codificado)
+print("\nTexto codificado:")
+print(texto_codificado)
 
-    print("\nÁrbol de Huffman:")
-    imprimir_arbol(arbol)
+print("\nÁrbol de Huffman:")
+imprimir_arbol(arbol)
 
-    print("\nTexto decodificado:")
-    print(decodificar_texto(texto_codificado, arbol))
+print("\nTexto decodificado:")
+print(decodificar_texto(texto_codificado, arbol))
 
-    print(f"\nEntropía: {entropia:.4f} bits")
-    print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo")
-    print(f"Eficiencia del código: {eficiencia:.2f} %")
+print(f"\nEntropía: {entropia:.4f} bits")
+print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo")
+print(f"Eficiencia del código: {eficiencia:.2f} %")
