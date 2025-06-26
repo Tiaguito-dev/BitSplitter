@@ -2,7 +2,7 @@ import tkinter as tk
 import customtkinter as ctk  # Importar customtkinter para widgets personalizados
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from BACKEND import constantes  # Importar las constantes desde el módulo de constantes
+from BACKEND import constantes, handler  # Importar las constantes desde el módulo de constantes
 from DATABASE import registros  # Para importar la ventana
 
 
@@ -114,8 +114,16 @@ frame_botones = tk.Frame(
     bg=constantes.color_fondo
     )
 frame_botones.grid(row=1, column=1,sticky="w")
+
 # Botón "Encode"
-codigo = registros.codigo  # Aquí se vincula la variable codigo para actualizarla con el código generado
+# Esta función se ejecuta cuando el usuario presiona el botón "Encode"
+def ejecutar_shannon():
+    codigo = handler.activar_shannon(entrada_titulo.get())  # Codifica el texto ingresado en la entrada de texto
+    campo_texto.configure(state="normal")
+    campo_texto.delete("1.0", "end")
+    campo_texto.insert("1.0", codigo)  # Inserta el código generado en el campo de texto
+    campo_texto.configure(state="disabled")  # Deshabilita el campo de texto para evitar modificaciones
+
 encode = ctk.CTkButton(
     frame_botones,
     text="Encode",
@@ -126,21 +134,13 @@ encode = ctk.CTkButton(
     width=100,
     border_width=1,  # Ancho del borde
     border_color=constantes.color_borde,  # Color del borde
-    # Cuando aprieta el botón tiene que guardar el texto en la BD
-    command = lambda: (
-        registros.guardar_palabra(entrada_titulo.get()),
-        campo_texto.configure(state="normal"),
-        campo_texto.delete("1.0", "end"),
-        campo_texto.insert("1.0", codigo.get()),
-        campo_texto.configure(state="disabled")
-    ) # Aquí se llama a la función que guarda el texto ingresado en la entrada de texto
-# TO DO # Implementar la función de codificación aquí
-
-
+    # Cuando aprieta el botón tiene que ejecutar la función de codificación
+    command = lambda: (ejecutar_shannon())
 )
 encode.grid(
     row=0, column=0, padx=10, pady=7,sticky="w"
 )
+
 # Botón "Decode"
 decode = ctk.CTkButton(
     frame_botones,

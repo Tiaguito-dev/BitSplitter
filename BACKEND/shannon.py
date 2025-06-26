@@ -1,11 +1,7 @@
 from collections import Counter #Usamos funcion Counter de la libreria collection para contar fácilmente cuántas veces aparece cada carácter en el texto.
 import math #se usa para calcular logaritmos (para la entropía).
-import string # ofrece listas útiles como string.printable, que usamos para filtrar caracteres válidos.
 
-def limpiar_texto(texto, permitidos=None): #Permite evitar contar caracteres invisibles (como \n, \x00, etc.) que pueden distorsionar las frecuencias.
-    if permitidos is None: #Filtra el texto para contar solo caracteres permitidos. Por defecto permite todos los caracteres imprimibles.
-        permitidos = set(string.printable)  
-    return ''.join(c for c in texto if c in permitidos)
+# -- MODULO DE CODIFICACIÓN SHANNON-FANO --
 
 def calcular_probabilidades(texto):
     frecuencias = Counter(texto) #Cuenta cada carácter del texto
@@ -61,15 +57,21 @@ def calcular_longitud_promedio(probabilidades, codigos): #Promedio ponderado de 
 def calcular_eficiencia(entropia, longitud_promedio): #Evalúa qué tan cercano está el código real a la entropía maxima (100%).
     return (entropia / longitud_promedio) * 100 if longitud_promedio > 0 else 0
 
-#Programa Principal
 
-def main(palabra):
-    # Validación básica de entrada
+# -- PROGRAMA PRINCIPAL --
+
+# Inicializa las variables globales para almacenar estadísticas del código generado.
+entropia = None #Inicializa la variable entropía
+longitud_promedio = None #Inicializa la variable longitud promedio
+eficiencia = None #Inicializa la variable eficiencia
+frecuencias = None #Inicializa la variable frecuencias
+probabilidades = None #Inicializa la variable probabilidades
+codigos = None #Inicializa la variable codigos
+
+# texto = entrada_limpia sin errores y todo eso
+def codificar(texto):
+    global entropia, longitud_promedio, eficiencia, frecuencias, probabilidades, codigos # Variables globales para almacenar estadísticas del código generado.
     print("Bienvenido al codificador Shannon-Fano") #Mensaje de bienvenida
-    texto = limpiar_texto(palabra) #Pide al usuario el texto y lo limpia para evitar errores de codificación con caracteres raros.
-    if not texto:
-        print("El texto no contiene caracteres válidos para codificar.")
-        exit() #Si después de limpiar no queda texto útil, se cancela.
 
     # Calcula las probabilidades y frecuencias de los caracteres
     # y genera los códigos Shannon-Fano
@@ -104,3 +106,23 @@ def main(palabra):
     print(f"Eficiencia del código: {eficiencia:.2f} %") #ficiencia: cuán cerca está de Hmax (100%)
     """
     return texto_codificado  # Devuelve el texto codificado para usarlo en la interfaz gráfica o donde sea necesario.
+
+# Devuelve las estadísticas del código generado
+def getEntropia():
+    global entropia
+    return entropia
+def getLongitudPromedio():
+    global longitud_promedio
+    return longitud_promedio
+def getEficiencia():
+    global eficiencia
+    return eficiencia
+def getFrecuencias():
+    global frecuencias
+    return frecuencias
+def getProbabilidades():
+    global probabilidades
+    return probabilidades
+def getDiccionario_codigos():
+    global codigos
+    return codigos
