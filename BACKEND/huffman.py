@@ -2,6 +2,12 @@ import heapq
 from collections import Counter
 import math
 
+# _____ DECLARACIÓN DE VARIABLES GLOBALES PARA DESPUES RETORNARLAS _____
+texto_codificado = None
+eficiencia = None
+entropia = None
+longitud_promedio = None
+
 # Clase para representar cada nodo del árbol de Huffman
 class NodoHuffman:
     def __init__(self, caracter=None, frecuencia=0):
@@ -127,35 +133,48 @@ def comprimir(texto):
     eficiencia = calcular_eficiencia(entropia, longitud_promedio)
     return texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia
 
+
+
 # Bloque principal
-texto = input("Ingrese el texto a codificar: ").strip()
+def main(texto):
+    global texto_codificado,entropia, eficiencia, longitud_promedio
+    texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia = comprimir(texto)
 
-if not texto:
-    print("Texto vacío. No hay nada para codificar.")
-    exit()
 
-texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia = comprimir(texto)
+    #"""
+    #================== IMPRESION DE RESULTADOS =================
+    print("Caracter | Frecuencia | Código Huffman")
+    print("---------|------------|-----------------------------")
+    tabla_huffman = obtener_tabla_desde_arbol(arbol, '', [], frecuencias, probabilidades)
+    # Ordenar por largo del código y luego alfabéticamente
+    tabla_huffman.sort(key=lambda x: (len(x['codigo']), x['caracter']))
+    for entrada in tabla_huffman:
+        char = repr(entrada['caracter'])
+        print(f"{char:^8} | {entrada['frecuencia']:^10} | {entrada['codigo']:^27}")
+    print("\nTexto codificado:")
+    print(texto_codificado)
 
-print("\nCaracter | Frecuencia | Código Huffman")
-print("---------|------------|-----------------------------")
-tabla_huffman = obtener_tabla_desde_arbol(arbol, '', [], frecuencias, probabilidades)
+    #print("\nÁrbol de Huffman:")
+    #imprimir_arbol(arbol)
 
-# Ordenar por largo del código y luego alfabéticamente
-tabla_huffman.sort(key=lambda x: (len(x['codigo']), x['caracter']))
+    print("\nTexto decodificado:")
+    print(decodificar_texto(texto_codificado, arbol))
 
-for entrada in tabla_huffman:
-    char = repr(entrada['caracter'])
-    print(f"{char:^8} | {entrada['frecuencia']:^10} | {entrada['codigo']:^27}")
+    print(f"\nEntropía: {entropia:.4f} bits")
+    print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo")
+    print(f"Eficiencia del código: {eficiencia:.2f} %")
+    #"""
 
-print("\nTexto codificado:")
-print(texto_codificado)
-
-print("\nÁrbol de Huffman:")
-imprimir_arbol(arbol)
-
-print("\nTexto decodificado:")
-print(decodificar_texto(texto_codificado, arbol))
-
-print(f"\nEntropía: {entropia:.4f} bits")
-print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo")
-print(f"Eficiencia del código: {eficiencia:.2f} %")
+def getTextoCodificado():
+    global texto_codificado
+    return texto_codificado
+    
+def getEficiencia():
+    global eficiencia
+    return eficiencia
+def getEntropia():
+    global entropia
+    return entropia
+def getLongitudPromedio():
+    global longitud_promedio
+    return longitud_promedio

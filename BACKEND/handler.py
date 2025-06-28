@@ -3,6 +3,7 @@ import os # Importar os para manipular rutas de archivos
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from DATABASE import registros  # Importar las constantes desde el módulo de constantes
 from BACKEND import shannon # Importar el módulo de codificación Shannon-Fano
+from BACKEND import huffman # Importar el módulo de codificación Huffman
 import tkinter as tk
 import string # ofrece listas útiles como string.printable, que usamos para filtrar caracteres válidos.
 
@@ -10,20 +11,19 @@ from collections import Counter #Usamos funcion Counter de la libreria collectio
 import math #se usa para calcular logaritmos (para la entropía).
 
 # -- MÓDULO DE MANEJO DE ENTRADAS Y CODIFICACIÓN --
-palabra = registros.palabra  # Rescato la variable palabra del módulo de registros
+texto = registros.palabra  # Rescato la variable palabra del módulo de registros
 codigo = registros.codigo  # Rescato la variable codigo del módulo de registros
 entropia = registros.entropia
 longitud_promedio = registros.longitud_promedio
 eficiencia_shannon= registros.eficiencia_shannon
+eficiencia_huffman = registros.eficiencia_huffman
 
 def limpiar_texto(texto, permitidos=None): #Permite evitar contar caracteres invisibles (como \n, \x00, etc.) que pueden distorsionar las frecuencias.
     if permitidos is None: #Filtra el texto para contar solo caracteres permitidos. Por defecto permite todos los caracteres imprimibles.
         permitidos = set(string.printable)  
     return ''.join(c for c in texto if c in permitidos)
 
-# -- PROGRAMA PRINCIPAL PARA CODIFICAR --
-def activar_shannon(entrada):
-    # Antes de guardar la entrada, se limpia el texto para evitar errores de codificación con caracteres raros.
+def guardar_entrada(entrada):
     entrada_limpia = limpiar_texto(entrada)  # Limpia la entrada de caracteres no imprimibles
 
     if not entrada_limpia:  # Si la entrada está vacía después de limpiar, se cancela la operación.
@@ -32,21 +32,51 @@ def activar_shannon(entrada):
         # TODO NO TIENE QUE TERMINAR EN REALIDAD, DEBERÍA DAR UN MENSAJE AL USUARIO Y VOLVER A PEDIR LA ENTRADA.
 
     # Guarda en la BD
-    palabra.set(entrada_limpia)
+    texto.set(entrada_limpia)
+
+# -- PROGRAMA PRINCIPAL PARA CODIFICAR --
+def activar_shannon(entrada):
+
+    guardar_entrada(entrada)  # Limpia y guarda la entrada en la BD
 
     # Calcula en el main de shannon
-    texto_codificado, frecuencias = shannon.codificar(palabra.get())
+    shannon.codificar(texto.get())
     
     # Guarda el resto de parámetros en la BD
-    codigo.set(texto_codificado)
-    entropia.set(round(shannon.getEntropia(), 2))
-    longitud_promedio.set(round(shannon.getLongitud_promedio(), 2))
-    eficiencia_shannon.set(round(shannon.getEficiencia(), 2))
+    codigo.set(shannon.getTextoCodificado())
+    entropia.set(round(shannon.getEntropia(), 4))                   # 4 decimales para entropia
+    longitud_promedio.set(round(shannon.getLongitud_promedio(), 4)) # 4 decimales para longitud promeido
+    eficiencia_shannon.set(round(shannon.getEficiencia(), 2))       # 2 decimales para eficiencia
 
-    print("Palabra para codificar:", palabra.get())  # Imprime la palabra a codificar en la consola
+    print("\n=== BIENVENIDO A SHANNON ===")
+    print("Palabra para codificar:", texto.get())  # Imprime la entrada a codificar en la consola
     print("Código generado:", codigo.get())  # Imprime el código generado en la consola
-    print("Entropia:", entropia.get())  # Imprime la palabra a codificar en la consola
+    print("Entropia:", entropia.get())  # Imprime la entrada a codificar en la consola
     print("Longitud Promedio:", longitud_promedio.get())  # Imprime el código generado en la consola
-    print("Eficiencia:", eficiencia_shannon.get())  # Imprime el código generado en la consola
+    print("Eficiencia:", eficiencia_shannon.get(), "%")  # Imprime el código generado en la consola
 
     return codigo.get()  # Devuelve el código generado para su uso posterior
+
+def activar_huffman(entrada):
+    
+    print("\n=== BIENVENIDO A HUFFMAN ===")
+    # Imprime todo en el algoritmo
+    guardar_entrada(entrada)
+    huffman.main(texto.get())
+
+    # Guarda el resto de parámetros en la BD
+    codigo.set(huffman.getTextoCodificado())
+    entropia.set(round(huffman.getEntropia(), 4))                   # 4 decimales para entropia
+    longitud_promedio.set(round(huffman.getLongitudPromedio(), 4)) # 4 decimales para longitud promeido
+    eficiencia_huffman.set(round(huffman.getEficiencia(), 2))       # 2 decimales para eficiencia
+
+    """
+    print("Palabra para codificar:", texto.get())  # Imprime la entrada a codificar en la consola
+    print("Código generado:", codigo.get())  # Imprime el código generado en la consola
+    print("Entropia:", entropia.get())  # Imprime la entrada a codificar en la consola
+    print("Longitud Promedio:", longitud_promedio.get())  # Imprime el código generado en la consola
+    print("Eficiencia:", eficiencia_huffman.get(), "%")  # Imprime el código generado en la consola
+    
+    """
+
+    return codigo.get()

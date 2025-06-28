@@ -4,6 +4,7 @@ import math #se usa para calcular logaritmos (para la entropía).
 # -- MODULO DE CODIFICACIÓN SHANNON-FANO --
 
 # Las incializo, son variables que tengo que pasarle a Mariano
+texto_codificado = None
 entropia = None
 longitud_promedio = None
 eficiencia = None
@@ -66,11 +67,8 @@ def calcular_frecuencias(texto):
     return Counter(texto)  # Retorna un diccionario con la frecuencia de cada carácter en el texto.
 
 # -- PROGRAMA PRINCIPAL --
-
-
-
 def codificar(texto):
-    global entropia, longitud_promedio, eficiencia
+    global texto_codificado, entropia, longitud_promedio, eficiencia
 
     frecuencias = calcular_frecuencias(texto)
     
@@ -107,7 +105,6 @@ def codificar(texto):
     print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo") #Longitud promedio: cuánto ocupa realmente.
     print(f"Eficiencia del código: {eficiencia:.2f} %") #ficiencia: cuán cerca está de Hmax (100%)
     """
-    return texto_codificado, frecuencias  # Devuelve el texto codificado para usarlo en la interfaz gráfica o donde sea necesario.
 
 def getEntropia():
     global entropia
@@ -118,3 +115,6 @@ def getLongitud_promedio():
 def getEficiencia():
     global eficiencia
     return eficiencia
+def getTextoCodificado():
+    global texto_codificado
+    return texto_codificado

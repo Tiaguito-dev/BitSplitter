@@ -10,3 +10,4 @@ codigo = tk.StringVar(ventana) # Esta es la variable que contendrá el código g
 entropia = tk.DoubleVar(ventana)
 longitud_promedio = tk.DoubleVar(ventana)
 eficiencia_shannon = tk.DoubleVar(ventana)
+eficiencia_huffman = tk.DoubleVar(ventana)
