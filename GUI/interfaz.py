@@ -1,10 +1,27 @@
 import tkinter as tk
 import customtkinter as ctk  # Importar customtkinter para widgets personalizados
+from tkinter import filedialog
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from BACKEND import constantes, handler  # Importar las constantes desde el módulo de constantes
 from DATABASE import registros  # Para importar la ventana
 
+# -- FUNCIONES PRINCIPALES --
+# Esta función se ejecuta cuando el usuario presiona el botón "Shannon"
+def ejecutar_shannon(input):
+    codigo = handler.activar_shannon(input)  # Codifica el texto ingresado en la entrada de texto
+    campo_texto.configure(state="normal")
+    campo_texto.delete("1.0", "end")
+    campo_texto.insert("1.0", codigo)  # Inserta el código generado en el campo de texto
+    campo_texto.configure(state="disabled")  # Deshabilita el campo de texto para evitar modificaciones
+
+def limpiar_campo_texto():
+    # Desbloquear si estaba bloqueado
+    campo_texto.configure(state="normal")
+    # Borrar todo el contenido
+    campo_texto.delete("1.0", tk.END)
+    # Bloquear de nuevo de nuevo
+    campo_texto.configure(state="disabled")
 
 # -- CONFIGURACIÓN DE LA VENTANA PRINCIPAL --
 ventana = registros.ventana  # Utilizar la ventana principal definida en registros.py
@@ -41,14 +58,13 @@ titulo = tk.Label(
 titulo.pack(expand=True)
 
 
-# -- Frame de la carga de archivos --
+# -- Frame del input --
 frame_input = tk.Frame(ventana, bg=constantes.color_fondo)  # Crear un frame para la carga de archivos
 frame_input.place(
     rely=0.09, 
     relheight=0.25, 
     relwidth=1
 )
-# Titulo de la sección carga de archivos
 tk.Label(
     frame_input, 
     text="Input Text", 
@@ -65,7 +81,28 @@ entrada_titulo = ctk.CTkEntry(
     border_color=constantes.color_borde
 )
 entrada_titulo.grid(row=1, column=0, padx=20, sticky="nw")
-# Botón redondeado con customtkinter
+
+# -- Carga de archivos
+def seleccionar_archivo():
+    ruta_archivo = filedialog.askopenfilename(
+        title="Selecciona un archivo",
+        filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")]
+    )
+    if ruta_archivo:
+        print(f"Archivo seleccionado: {ruta_archivo}")
+        # Aquí podrías abrirlo o hacer lo que necesites:
+        with open(ruta_archivo, 'r', encoding='utf-8') as f:
+            contenido = f.read()
+        print("Contenido del archivo:")
+        print(contenido)
+        entrada_titulo.delete(0, tk.END)  # Limpia lo que tenga
+        entrada_titulo.insert(0, contenido)  # Inserta el nuevo valor
+        # Limpio el campo del texto
+        limpiar_campo_texto()
+    else:
+        print("No se seleccionó ningún archivo.")
+
+# Titulo de la sección carga de archivos
 boton_cargar = ctk.CTkButton(
     frame_input,
     text="Cargar archivo",
@@ -75,7 +112,7 @@ boton_cargar = ctk.CTkButton(
     corner_radius=5,            # radio del borde redondeado
     border_width=1,  # Ancho del borde
     border_color=constantes.color_borde,  # Color del borde
-    command=lambda: print("¡Archivo cargado!")
+    command= lambda: seleccionar_archivo()
 )
 boton_cargar.grid(row=1, column=1, padx=20, sticky="w")
 
@@ -108,25 +145,19 @@ campo_texto = ctk.CTkTextbox(
 )
 campo_texto.grid(row=1, column=0, sticky="nsew", padx=20, pady=(0,10))
 campo_texto.configure(state="disabled")
-# Botones de codificación y decodificación
+
+
+# -- FRAME SHANNON Y HUFFMAN
 frame_botones = tk.Frame(
     frame_code,
     bg=constantes.color_fondo
     )
 frame_botones.grid(row=1, column=1,sticky="w")
 
-# Botón "Encode"
-# Esta función se ejecuta cuando el usuario presiona el botón "Encode"
-def ejecutar_shannon():
-    codigo = handler.activar_shannon(entrada_titulo.get())  # Codifica el texto ingresado en la entrada de texto
-    campo_texto.configure(state="normal")
-    campo_texto.delete("1.0", "end")
-    campo_texto.insert("1.0", codigo)  # Inserta el código generado en el campo de texto
-    campo_texto.configure(state="disabled")  # Deshabilita el campo de texto para evitar modificaciones
-
+# Botón "Shannon"
 encode = ctk.CTkButton(
     frame_botones,
-    text="Encode",
+    text="Shannon",
     font=("Arial", 14),
     fg_color= constantes.color_boton,          # color de fondo
     text_color=constantes.color_texto,          # color del texto
@@ -135,16 +166,16 @@ encode = ctk.CTkButton(
     border_width=1,  # Ancho del borde
     border_color=constantes.color_borde,  # Color del borde
     # Cuando aprieta el botón tiene que ejecutar la función de codificación
-    command = lambda: (ejecutar_shannon())
+    command = lambda: (ejecutar_shannon(entrada_titulo.get()))
 )
 encode.grid(
     row=0, column=0, padx=10, pady=7,sticky="w"
 )
 
-# Botón "Decode"
+# Botón "Huffman"
 decode = ctk.CTkButton(
     frame_botones,
-    text="Decode",
+    text="Huffman",
     font=("Arial", 14),
     fg_color= constantes.color_boton,          # color de fondo
     text_color=constantes.color_texto,          # color del texto

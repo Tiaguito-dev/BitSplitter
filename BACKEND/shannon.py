@@ -3,11 +3,15 @@ import math #se usa para calcular logaritmos (para la entropía).
 
 # -- MODULO DE CODIFICACIÓN SHANNON-FANO --
 
-def calcular_probabilidades(texto):
-    frecuencias = Counter(texto) #Cuenta cada carácter del texto
+# Las incializo, son variables que tengo que pasarle a Mariano
+entropia = None
+longitud_promedio = None
+eficiencia = None
+
+def calcular_probabilidades(texto, frecuencias):
     total = sum(frecuencias.values()) #Total de caracteres
     probabilidades = {char: freq / total for char, freq in frecuencias.items()}
-    return probabilidades, frecuencias #Retorna dos estructuras: probabilidades: diccionario {carácter: probabilidad} y frecuencias: diccionario {carácter: frecuencia absoluta} 
+    return probabilidades #Retorna probabilidades: diccionario {carácter: probabilidad}
 
 def shannon_fano(probabilidades):
     simbolos_ordenados = sorted(probabilidades.items(), key=lambda x: x[1], reverse=True) #Ordena los símbolos por probabilidad descendente.
@@ -48,7 +52,7 @@ def codificar_recursivo(simbolos):
 def codificar_texto(texto, codigos): #Reemplaza cada carácter del texto original con su código Shannon-Fano
     return ''.join(codigos[char] for char in texto)
 
-def calcular_entropia(probabilidades): #Fórmula de entropía de Shannon: mide la cantidad mínima de bits necesarios para codificar el mensaje.
+def calcular_entropia(probabilidades): 
     return -sum(p * math.log2(p) for p in probabilidades.values())
 
 def calcular_longitud_promedio(probabilidades, codigos): #Promedio ponderado de la longitud de los códigos (se espera que se acerque a la entropía si el código es eficiente)
@@ -57,30 +61,28 @@ def calcular_longitud_promedio(probabilidades, codigos): #Promedio ponderado de 
 def calcular_eficiencia(entropia, longitud_promedio): #Evalúa qué tan cercano está el código real a la entropía maxima (100%).
     return (entropia / longitud_promedio) * 100 if longitud_promedio > 0 else 0
 
+def calcular_frecuencias(texto):
+    """Calcula las frecuencias de los caracteres en el texto."""
+    return Counter(texto)  # Retorna un diccionario con la frecuencia de cada carácter en el texto.
 
 # -- PROGRAMA PRINCIPAL --
 
-# Inicializa las variables globales para almacenar estadísticas del código generado.
-entropia = None #Inicializa la variable entropía
-longitud_promedio = None #Inicializa la variable longitud promedio
-eficiencia = None #Inicializa la variable eficiencia
-frecuencias = None #Inicializa la variable frecuencias
-probabilidades = None #Inicializa la variable probabilidades
-codigos = None #Inicializa la variable codigos
 
-# texto = entrada_limpia sin errores y todo eso
+
 def codificar(texto):
-    global entropia, longitud_promedio, eficiencia, frecuencias, probabilidades, codigos # Variables globales para almacenar estadísticas del código generado.
-    print("Bienvenido al codificador Shannon-Fano") #Mensaje de bienvenida
+    global entropia, longitud_promedio, eficiencia
 
-    # Calcula las probabilidades y frecuencias de los caracteres
-    # y genera los códigos Shannon-Fano
-    probabilidades, frecuencias = calcular_probabilidades(texto)
+    frecuencias = calcular_frecuencias(texto)
+    
+    probabilidades = calcular_probabilidades(texto, frecuencias)
+
     codigos = shannon_fano(probabilidades) #Se calculan las probabilidades y se generan los códigos Shannon-Fano.
     
     #Codifica el mensaje
     texto_codificado = codificar_texto(texto, codigos)
     
+    # Calcula las frecuencias diccionario {carácter: frecuencia}
+
     # Calcula la entropía, longitud promedio y eficiencia del código
     entropia = calcular_entropia(probabilidades) 
     longitud_promedio = calcular_longitud_promedio(probabilidades, codigos)
@@ -105,24 +107,14 @@ def codificar(texto):
     print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo") #Longitud promedio: cuánto ocupa realmente.
     print(f"Eficiencia del código: {eficiencia:.2f} %") #ficiencia: cuán cerca está de Hmax (100%)
     """
-    return texto_codificado  # Devuelve el texto codificado para usarlo en la interfaz gráfica o donde sea necesario.
+    return texto_codificado, frecuencias  # Devuelve el texto codificado para usarlo en la interfaz gráfica o donde sea necesario.
 
-# Devuelve las estadísticas del código generado
 def getEntropia():
     global entropia
     return entropia
-def getLongitudPromedio():
+def getLongitud_promedio():
     global longitud_promedio
     return longitud_promedio
 def getEficiencia():
     global eficiencia
     return eficiencia
-def getFrecuencias():
-    global frecuencias
-    return frecuencias
-def getProbabilidades():
-    global probabilidades
-    return probabilidades
-def getDiccionario_codigos():
-    global codigos
-    return codigos

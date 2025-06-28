@@ -12,8 +12,10 @@ import math #se usa para calcular logaritmos (para la entropía).
 # -- MÓDULO DE MANEJO DE ENTRADAS Y CODIFICACIÓN --
 palabra = registros.palabra  # Rescato la variable palabra del módulo de registros
 codigo = registros.codigo  # Rescato la variable codigo del módulo de registros
+entropia = registros.entropia
+longitud_promedio = registros.longitud_promedio
+eficiencia_shannon= registros.eficiencia_shannon
 
-# Esta función se encarga de limpiar el texto de caracteres no imprimibles o invisibles.
 def limpiar_texto(texto, permitidos=None): #Permite evitar contar caracteres invisibles (como \n, \x00, etc.) que pueden distorsionar las frecuencias.
     if permitidos is None: #Filtra el texto para contar solo caracteres permitidos. Por defecto permite todos los caracteres imprimibles.
         permitidos = set(string.printable)  
@@ -29,28 +31,22 @@ def activar_shannon(entrada):
         exit()  # Termina el programa si no hay texto válido para codificar.
         # TODO NO TIENE QUE TERMINAR EN REALIDAD, DEBERÍA DAR UN MENSAJE AL USUARIO Y VOLVER A PEDIR LA ENTRADA.
 
-    # Guarda la entrada limpia y el código generado en las variables de la BD
-    palabra.set(entrada_limpia)  # Guarda la entrada en la BD
-    codigo.set(shannon.codificar(palabra.get()))  # Codifica la palabra usando el algoritmo de Shannon-Fano y guarda el resultado en la BD
+    # Guarda en la BD
+    palabra.set(entrada_limpia)
 
-    # Obtengo el resto de las estadísticas del código generado
-    # Impresión de estadísticas en la consola
+    # Calcula en el main de shannon
+    texto_codificado, frecuencias = shannon.codificar(palabra.get())
+    
+    # Guarda el resto de parámetros en la BD
+    codigo.set(texto_codificado)
+    entropia.set(round(shannon.getEntropia(), 2))
+    longitud_promedio.set(round(shannon.getLongitud_promedio(), 2))
+    eficiencia_shannon.set(round(shannon.getEficiencia(), 2))
+
     print("Palabra para codificar:", palabra.get())  # Imprime la palabra a codificar en la consola
     print("Código generado:", codigo.get())  # Imprime el código generado en la consola
-    entropia = shannon.getEntropia()
-    print(f"\nEntropía H(X): {entropia:.4f} bits")
-    longitud_promedio = shannon.getLongitudPromedio()
-    print(f"Longitud promedio del código: {longitud_promedio:.4f} bits/símbolo")
-    eficiencia = shannon.getEficiencia()
-    print(f"Eficiencia del código: {eficiencia:.2f} %")
-
-    # TODO Hay que ver cómo le paso esto a mariano
-    frecuencias = shannon.getFrecuencias()
-    probabilidades = shannon.getProbabilidades()
-    diccionario_codigos = shannon.getDiccionario_codigos()
-
-    for char in sorted(probabilidades, key=probabilidades.get, reverse=True):
-        print(f"{repr(char):^8} | {frecuencias[char]:^10} | {probabilidades[char]:^12.4f} | {diccionario_codigos[char]:^19}")
-
+    print("Entropia:", entropia.get())  # Imprime la palabra a codificar en la consola
+    print("Longitud Promedio:", longitud_promedio.get())  # Imprime el código generado en la consola
+    print("Eficiencia:", eficiencia_shannon.get())  # Imprime el código generado en la consola
 
     return codigo.get()  # Devuelve el código generado para su uso posterior
