@@ -136,12 +136,16 @@ if not texto:
 
 texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia = comprimir(texto)
 
-print("\nCaracter | Frecuencia | Probabilidad | Código Huffman")
-print("---------|------------|--------------|-----------------------------")
+print("\nCaracter | Frecuencia | Código Huffman")
+print("---------|------------|-----------------------------")
 tabla_huffman = obtener_tabla_desde_arbol(arbol, '', [], frecuencias, probabilidades)
+
+# Ordenar por largo del código y luego alfabéticamente
+tabla_huffman.sort(key=lambda x: (len(x['codigo']), x['caracter']))
+
 for entrada in tabla_huffman:
     char = repr(entrada['caracter'])
-    print(f"{char:^8} | {entrada['frecuencia']:^10} | {entrada['probabilidad']:^12.4f} | {entrada['codigo']:^27}")
+    print(f"{char:^8} | {entrada['frecuencia']:^10} | {entrada['codigo']:^27}")
 
 print("\nTexto codificado:")
 print(texto_codificado)
