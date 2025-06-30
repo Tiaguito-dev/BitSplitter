@@ -6,7 +6,6 @@ BitSplitter es una herramienta educativa e interactiva para comprimir texto usan
 ## 🚀 Características
 - 📄 Carga de texto desde archivo o entrada manual
 - 🔤 Compresión y descompresión usando Huffman y Shannon-Fano
-- 🌲 Visualización de árboles de codificación
 - 📊 Comparación gráfica de eficiencia, tasa de compresión y longitud de código
 - 🖥️ Interfaz de línea de comandos con futura expansión a GUI con Tkinter
 
@@ -20,7 +19,7 @@ BitSplitter es una herramienta educativa e interactiva para comprimir texto usan
 
 ---
 
-## ⚙️ Cómo ejecutar el proyecto
+## ⚙️ Cómo clonar el repo del proyecto
 
 ### 1. Clonar el repositorio
 En la terminal de VS code o de tu preferencia
