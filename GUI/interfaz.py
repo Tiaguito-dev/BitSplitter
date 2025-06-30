@@ -11,8 +11,10 @@ import visualizacion
 """
 TODO 
 REVISAR COMENTARIOS
+
 REVISAR EL RESTO DE TO-DO
-IMPRESIÓN DE MENSAJE DE ERROR
+
+CORREGIR ERROR EN IMPRESIÓN DE MENSAJE DE ERROR: Cuando ingreso un caracter, codifico, limpio el input y vuelvo a querer codificar es como que no me salta error y me tira caracter vacío
 """
 
 
@@ -21,8 +23,8 @@ IMPRESIÓN DE MENSAJE DE ERROR
 def mostrar_resultados(eficiencia_shannon, entropia, longitud_promedio):
 
     resultado1= f"Eficiencia: {eficiencia_shannon}%"
-    resultado2= f"Entropia: {entropia} bits/símbolo"
-    resultado3= f"Longitud Promedio: {longitud_promedio} bits/símbolo"
+    resultado2= f"Entropia: {entropia} bits/simbolo"
+    resultado3= f"Longitud Promedio: {longitud_promedio} bits"
 
     etiqueta_eficiencia.config(text=resultado1)
     etiqueta_entropia.config(text=resultado2)
@@ -30,11 +32,18 @@ def mostrar_resultados(eficiencia_shannon, entropia, longitud_promedio):
 
 # Esta funcion muestra el codigo generado en el campo_texto
 def mostrar_codigo(codigo):
+
     # Como el campo está bloqueado, primero lo desbloqueamos
     campo_texto.configure(state="normal")
     campo_texto.delete("1.0", "end")  # Borramos cualquier contenido previo
-    campo_texto.insert("1.0", codigo)  # Ponemos el código generado ahí
-    campo_texto.configure(state="disabled")  # Volvemos a bloquear para que no se edite
+
+    # En caso de que haya ingresado una entrada erronea, handler me devuelve False en codigo
+    if not codigo:
+        campo_texto.insert("1.0", "ERROR EN LA ENTRADA DE TEXTO, POR FAVOR INTENTE NUEVAMENTE")  # Ponemos el código generado ahí
+        campo_texto.configure(text_color="red",state="disabled")  # Volvemos a bloquear para que no se edite
+    else:
+        campo_texto.insert("1.0", codigo)  # Ponemos el código generado ahí
+        campo_texto.configure(text_color="black",state="disabled")  # Volvemos a bloquear para que no se edite
 
 
 # Esta función se dispara cuando el usuario hace click en "Shannon"
