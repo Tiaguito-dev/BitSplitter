@@ -6,6 +6,7 @@ color_boton = "#B4C4DE"        # Verde suave (material design)   # Verde más os
 color_texto = "#131643"         # Texto blanco sobre botone
 color_fondo_titulo = color_boton
 color_borde= "#2C3E50"
+color_campo_texto = "white"
 
 # Tipografías
 fuente_general = ("Segoe UI", 12)      # Fuente clara y moderna

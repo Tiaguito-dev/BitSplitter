@@ -26,14 +26,14 @@ def limpiar_texto(texto, permitidos=None): #Permite evitar contar caracteres inv
 def guardar_entrada(entrada):
     entrada_limpia = limpiar_texto(entrada)  # Limpia la entrada de caracteres no imprimibles
 
+    # Guarda en la BD
+    texto.set(entrada_limpia.upper())
+    print(entrada_limpia.upper())
     if not entrada_limpia:  # Si la entrada está vacía después de limpiar, se cancela la operación.
         print("La entrada está vacía o contiene solo caracteres no imprimibles.")
         return False  # Termina el programa si no hay texto válido para codificar.
         # TODO NO TIENE QUE TERMINAR EN REALIDAD, DEBERÍA DAR UN MENSAJE AL USUARIO Y VOLVER A PEDIR LA ENTRADA.
 
-    # Guarda en la BD
-    texto.set(entrada_limpia.upper())
-    print(entrada_limpia.upper())
 
 # -- PROGRAMA PRINCIPAL PARA CODIFICAR --
 def activar_shannon(entrada):
@@ -49,8 +49,8 @@ def activar_shannon(entrada):
         # Guarda el resto de parámetros en la BD
         codigo.set(shannon.getTextoCodificado())
         entropia.set(round(shannon.getEntropia(), 4))                   # 4 decimales para entropia
-        longitud_promedio.set(round(shannon.getLongitud_promedio(), 4)) # 4 decimales para longitud promeido
-        eficiencia_shannon.set(round(shannon.getEficiencia(), 2))       # 2 decimales para eficiencia
+        longitud_promedio.set(round(shannon.getLongitud_promedio(), 6)) # 4 decimales para longitud promeido
+        eficiencia_shannon.set(math.floor(shannon.getEficiencia()))       # 2 decimales para eficiencia
 
         print("\n=== BIENVENIDO A SHANNON ===")
         print("Palabra para codificar:", texto.get())  # Imprime la entrada a codificar en la consola
@@ -71,8 +71,8 @@ def activar_huffman(entrada):
     # Guarda el resto de parámetros en la BD
     codigo.set(huffman.getTextoCodificado())
     entropia.set(round(huffman.getEntropia(), 4))                   # 4 decimales para entropia
-    longitud_promedio.set(round(huffman.getLongitudPromedio(), 4)) # 4 decimales para longitud promeido
-    eficiencia_huffman.set(round(huffman.getEficiencia(), 2))       # 2 decimales para eficiencia
+    longitud_promedio.set(round(huffman.getLongitudPromedio(),6)) # 4 decimales para longitud promeido
+    eficiencia_huffman.set(math.ceil(huffman.getEficiencia()))       # 2 decimales para eficiencia
 
     """
     print("Palabra para codificar:", texto.get())  # Imprime la entrada a codificar en la consola

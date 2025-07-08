@@ -5,7 +5,7 @@ import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from BACKEND import constantes, handler  # Importar las constantes desde el módulo de constantes
 from DATABASE import registros  # Para importar la ventana
-import visualizacion
+from GUI import visualizacion
 
 
 """
@@ -156,7 +156,8 @@ texto_entrada = ctk.CTkEntry(
     width=400,
     corner_radius=5,
     border_width=1,
-    border_color=constantes.color_borde
+    border_color=constantes.color_borde,
+    fg_color=constantes.color_campo_texto
 )
 texto_entrada.grid(row=1, column=0, padx=20, sticky="nw")
 
@@ -213,7 +214,8 @@ campo_texto = ctk.CTkTextbox(
     wrap="word",
     corner_radius=5,
     border_width=1,
-    border_color=constantes.color_borde
+    border_color=constantes.color_borde,
+    fg_color=constantes.color_campo_texto
 )
 campo_texto.grid(row=1, column=0, sticky="nsew", padx=20, pady=(0,10))
 campo_texto.configure(state="disabled")
