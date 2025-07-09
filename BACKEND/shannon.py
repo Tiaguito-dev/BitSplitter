@@ -9,7 +9,7 @@ entropia = None
 longitud_promedio = None
 eficiencia = None
 
-def calcular_probabilidades(texto, frecuencias):
+def calcular_probabilidades(texto,frecuencias):
     total = sum(frecuencias.values()) #Total de caracteres
     probabilidades = {char: freq / total for char, freq in frecuencias.items()}
     return probabilidades #Retorna probabilidades: diccionario {carácter: probabilidad}

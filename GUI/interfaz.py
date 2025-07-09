@@ -94,7 +94,8 @@ def ejecutar_grafica():
     handler.activar_shannon(texto_entrada.get())
     eficiencia_shannon=registros.eficiencia_shannon.get()
     eficiencia_huffman=registros.eficiencia_huffman.get()
-    visualizacion.abrir_ventana_grafico(ventana, eficiencia_shannon,eficiencia_huffman)
+    eficiencia_ascii=handler.activar_ascii()
+    visualizacion.abrir_ventana_grafico(ventana, eficiencia_shannon,eficiencia_huffman, eficiencia_ascii)
 
 def imprimir_error():
     #acá deberia imprimir error

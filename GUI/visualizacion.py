@@ -3,15 +3,15 @@ from tkinter import Toplevel
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-def abrir_ventana_grafico(ventana, eficiencia_shannon,eficiencia_huffman):
+def abrir_ventana_grafico(ventana, eficiencia_shannon,eficiencia_huffman, eficiencia_ascii):
     # Crear ventana secundaria
     ventana_grafico = Toplevel(ventana)
     ventana_grafico.title("Gráfico de Barras")
     ventana_grafico.geometry("600x400")
 
     # Ejemplo de datos
-    categorias = ["shannon", "huffman"]
-    valores = [eficiencia_shannon, eficiencia_huffman]
+    categorias = ["shannon", "huffman", "ascii"]
+    valores = [eficiencia_shannon, eficiencia_huffman, eficiencia_ascii]
 
     # Crear figura de matplotlib
     figura = Figure(figsize=(5, 3), dpi=100)

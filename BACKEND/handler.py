@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from DATABASE import registros  # Importar las constantes desde el módulo de constantes
 from BACKEND import shannon # Importar el módulo de codificación Shannon-Fano
 from BACKEND import huffman # Importar el módulo de codificación Huffman
+from BACKEND import ascii
 import tkinter as tk
 import string # ofrece listas útiles como string.printable, que usamos para filtrar caracteres válidos.
 
@@ -66,7 +67,7 @@ def activar_huffman(entrada):
     print("\n=== BIENVENIDO A HUFFMAN ===")
     # Imprime todo en el algoritmo
     guardar_entrada(entrada)
-    huffman.main(texto.get())
+    huffman.codificar(texto.get())
 
     # Guarda el resto de parámetros en la BD
     codigo.set(huffman.getTextoCodificado())
@@ -84,3 +85,7 @@ def activar_huffman(entrada):
     """
 
     return codigo.get()
+
+def activar_ascii():
+    return ascii.codificar(texto.get())
+    

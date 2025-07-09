@@ -136,7 +136,7 @@ def comprimir(texto):
 
 
 # Bloque principal
-def main(texto):
+def codificar(texto):
     global texto_codificado,entropia, eficiencia, longitud_promedio
     texto_codificado, codigos, arbol, frecuencias, probabilidades, entropia, longitud_promedio, eficiencia = comprimir(texto)
 
